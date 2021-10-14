@@ -54,9 +54,7 @@
     </el-card>
 
     <!-- 分页区域 -->
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum"
-			               :page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.pagesize" :total="total"
-			               layout="total, sizes, prev, pager, next, jumper" background>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum"	:page-sizes="[1, 2, 5, 10]" :page-size="queryInfo.pagesize" :total="total" layout="total, sizes, prev, pager, next, jumper" background>
 		</el-pagination>
 
     <!--添加用户的对话框-->
@@ -104,7 +102,7 @@
 			</span>
 		</el-dialog>
 
-				<!--分配角色的对话框-->
+		<!--分配角色的对话框-->
 		<el-dialog title="分配角色" width="50%" :visible.sync="setRoleDialogVisible" :close-on-click-modal="false" @close="setRoleDialogClosed">
 			<!--内容主体-->
 			<div>
@@ -200,14 +198,14 @@ export default {
 						{validator: checkMobile, trigger: 'blur'}
 					]
 			},
-				//需要被分配角色的用户信息
-				userInfo: {},
-				//所有角色的数据列表
-				rolesList: [],
-				//已选中的角色id
-				selectRoleId: '',
-				//分配角色对话框的显示状态
-				setRoleDialogVisible: false,
+			//需要被分配角色的用户信息
+			userInfo: {},
+			//所有角色的数据列表
+			rolesList: [],
+			//已选中的角色id
+			selectRoleId: '',
+			//分配角色对话框的显示状态
+			setRoleDialogVisible: false,
     }
   },
   created() {
@@ -237,7 +235,6 @@ export default {
     },
     // 状态改变
     async userStateChanged(userinfo){
-      console.log()
       const {data: res} = await this.$http.put(
         `users/${userinfo.id}/state/${userinfo.mg_state}`)
       if(res.meta.status !== 200){
@@ -250,13 +247,14 @@ export default {
     addDialogClosed(){
       this.$refs.addFormRef.resetFields()
     },
+		// 增加用户
     addUser() {
       this.$refs.addFormRef.validate( async valid => {
         if(!valid) return
 
         const {data:res} = await this.$http.post('users',this.addForm)
 
-        if(res.meta.status !== 201){
+        if(res.meta.status !== 200){
           this.$message.error("添加失败")
         }
         this.$message.success('添加成功')
@@ -265,9 +263,11 @@ export default {
 
       })
     },
+		// 编辑对话框关闭时重置数据
     editDialogClosed() {
 			this.$refs.editFormRef.resetFields()
 		},
+		// 显示编辑对话框
     async showEditDialog(id) {
       const {data:res} = await this.$http.get('users/' + id)
       if(res.meta.status !== 200){
@@ -276,6 +276,7 @@ export default {
       this.editForm = res.data
       this.editDialogVisible = true
     },
+		// 编辑用户
     editUserInfo(){
       this.$refs.editFormRef.validate(async valid => {
         if(!valid) return
@@ -292,7 +293,7 @@ export default {
         this.$message.success('更新用户成功')
       })
     },
-    	//根据id删除对应的用户
+    //根据id删除对应的用户
 		async removeUserById(id) {
 			const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
 				  confirmButtonText: '确定',
@@ -311,7 +312,7 @@ export default {
       this.$message.success('删除用户成功')
       this.getUserList()
 		},
-					//显示分配角色对话框
+		//显示分配角色对话框
 		async	showSetRoleDialog(userInfo) {
 				this.userInfo = userInfo
 				const {data:res} = await this.$http.get('roles')
@@ -322,27 +323,26 @@ export default {
 					}
 				
 				this.setRoleDialogVisible = true
-			},
-			//分配角色对话框关闭事件
-			setRoleDialogClosed() {
-				this.selectRoleId = ''
-				this.userInfo = {}
-			},
-			//确定分配角色
-			async saveRoleInfo() {
-				if (!this.selectRoleId) {
-					return this.$message.error('请选择要分配的角色')
-				}
-				const { data : res } = await this.$http.put(`users/${this.userInfo.id}/role`, {rid: this.selectRoleId})
-					if (res.meta.status === 200) {
-						this.getUserList()
-						this.setRoleDialogVisible = false
-						this.$message.success(res.meta.msg)
-					} else {
-						this.$message.error(res.meta.msg)
-					}
-	
+		},
+		//分配角色对话框关闭事件
+		setRoleDialogClosed() {
+			this.selectRoleId = ''
+			this.userInfo = {}
+		},
+		//确定分配角色
+		async saveRoleInfo() {
+			if (!this.selectRoleId) {
+				return this.$message.error('请选择要分配的角色')
 			}
+			const { data : res } = await this.$http.put(`users/${this.userInfo.id}/role`, {rid: this.selectRoleId})
+				if (res.meta.status === 200) {
+					this.getUserList()
+					this.setRoleDialogVisible = false
+					this.$message.success(res.meta.msg)
+				} else {
+					this.$message.error(res.meta.msg)
+				}
+		}
   }
 }
 </script>

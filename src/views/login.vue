@@ -44,9 +44,11 @@ export default {
     }
   },
   methods:{
+    // 重置登录表
     resetLoginForm() {
 				this.$refs.form.resetFields();
 		},
+    // 登录
     login(){
       this.$refs.form.validate(async valid => {
         if(!valid) return;

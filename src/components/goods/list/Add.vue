@@ -86,6 +86,7 @@
 		name: "Add",
 		data() {
 			return {
+				//级联选择器分类列表
 				cateList: [],
 				//指定级联选择器的配置对象
 				cascaderProps: {
@@ -155,6 +156,7 @@
 					this.$message.error('请求失败')
 				})
 			},
+			// 级联选择器数据变化处理函数
 			handleChange() {
 				if (this.addForm.goods_cat.length !== 3) {
 					this.addForm.goods_cat = []
@@ -258,6 +260,7 @@
 			}
 		},
 		computed: {
+			//当前选中的三级分类的id
 			cateId() {
 				if (this.addForm.goods_cat.length === 3) {
 					return this.addForm.goods_cat[2]

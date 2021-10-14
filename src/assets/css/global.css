@@ -5,6 +5,7 @@ body,
     margin: 0;
     padding: 0;
     min-width: 1366px;
+
 }
 
 .el-breadcrumb {
@@ -37,7 +38,7 @@ body,
 .el-cascader-panel{
     height: 200px !important;
 }
-
+/* 删除确认el-pagination的背景颜色 */
 .el-popover {
     position: absolute;
     background: #FFF;

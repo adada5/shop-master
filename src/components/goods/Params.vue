@@ -55,8 +55,7 @@
 								<!--循环渲染tag标签-->
 								<el-tag v-for="(item,index) in scope.row.attr_vals" :key="index" closable @close="handleTagClose(scope.row,index)">{{ item }}</el-tag>
 								<!--添加tag标签-->
-								<el-input class="input-new-tag" v-if="scope.row.inputTagVisible" v-model="scope.row.inputTagValue" ref="saveTagInput"
-								          size="small" @keyup.enter.native="handleInputTagConfirm(scope.row)" @blur="handleInputTagConfirm(scope.row)"></el-input>
+								<el-input class="input-new-tag" v-if="scope.row.inputTagVisible" v-model="scope.row.inputTagValue" ref="saveTagInput" size="small" @keyup.enter.native="handleInputTagConfirm(scope.row)" @blur="handleInputTagConfirm(scope.row)"></el-input>
 								<el-button v-else class="button-new-tag" size="small" @click="showTagInput(scope.row)">+ New Tag</el-button>
 							</template>
 						</el-table-column>
@@ -197,10 +196,11 @@
 					this.onlyTableData = []
 				}
 			},
+			// 监听添加对话框关闭事件
 			addDialogClosed() {
 				this.$refs.addFormRef.resetFields()
 			},
-			//确定添加参数
+			//确定添加参数名
 			addParams() {
 				this.$refs.addFormRef.validate(valid => {
 					if (valid) {
@@ -222,15 +222,18 @@
 					}
 				})
 			},
+			// 展示修改对话框
 			showEditDialog(paramsInfo) {
-				//paramsInfo中没有对象，直接深拷贝一份，也没必要从服务端重新获取了
+				//paramsInfo浅拷贝数据一份，这样不用从服务端重新获取了
 				//如果直接赋值，则为引用，表格上的数据也会随对话框中数据的修改而实时改变
 				this.editForm = {...paramsInfo}
 				this.editDialogVisible = true
 			},
+			// 监听修改对话框关闭事件
 			editDialogClosed() {
 				this.$refs.editFormRef.resetFields()
 			},
+			// 确定修改参数名
 			editParams() {
 				this.$refs.editFormRef.validate(valid => {
 					if (valid) {
@@ -252,8 +255,9 @@
 					}
 				})
 			},
+			// 删除参数
 			removeParamsById(id) {
-				console.log(111)
+				
 				this.$http.delete(`categories/${this.cateId}/attributes/${id}`).then(response => {
 					const res = response.data
 					if (res.meta.status === 200) {
@@ -312,6 +316,7 @@
 			}
 		},
 		computed: {
+			// 非第三级分类不可添加参数名称
 			isBtnDisabled() {
 				return this.selectedKeys.length !== 3;
 			},

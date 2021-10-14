@@ -16,29 +16,6 @@
 				</el-col>
 			</el-row>
 
-			<!-- vue-table-with-tree-grid依赖 树形列表 -->
-			<!--<tree-table class="treeTable" :data="cateList" :columns="columns" :selection-type="false" :expand-type="false"
-			            :show-index="true" :border="true" :stripe="false">
-				&lt;!&ndash;是否有效&ndash;&gt;
-				<template slot="isok" slot-scope="scope">
-					<i class="el-icon-success" v-if="scope.row.cat_deleted === false" style="color: lightgreen"></i>
-					<i class="el-icon-error" v-else style="color: red"></i>
-				</template>
-				&lt;!&ndash;排序&ndash;&gt;
-				<template slot="order" slot-scope="scope">
-					<el-tag size="mini" v-if="scope.row.cat_level===0">一级</el-tag>
-					<el-tag size="mini" type="success" v-else-if="scope.row.cat_level===1">二级</el-tag>
-					<el-tag size="mini" type="warning" v-else>三级</el-tag>
-				</template>
-				&lt;!&ndash;操作&ndash;&gt;
-				<template slot="opt" slot-scope="scope">
-					<el-button size="mini" type="primary" icon="el-icon-edit" @click="showEditDialog(scope.row)">编辑</el-button>
-					<el-popconfirm title="确定删除吗？" icon="el-icon-delete" iconColor="red" @onConfirm="removeCateById(scope.row.cat_id)">
-						<el-button size="mini" type="danger" icon="el-icon-delete" slot="reference">删除</el-button>
-					</el-popconfirm>
-				</template>
-			</tree-table>-->
-
 			<!-- Element 树形列表 -->
 			<el-table :data="cateList" row-key="cat_id" :tree-props="{children: 'children'}" :border="true" :stripe="true">
 				<el-table-column label="序号" type="index" width="50"></el-table-column>
@@ -281,6 +258,7 @@
 					}
 				})
 			},
+			// 显示修改分类对话框
 			showEditDialog(cateInfo) {
 				this.editCateForm.cat_id = cateInfo.cat_id
 				this.editCateForm.cat_name = cateInfo.cat_name
@@ -311,6 +289,7 @@
 					}
 				})
 			},
+			// 删除分类
 			removeCateById(id) {
 				this.$http.delete(`categories/${id}`).then(response => {
 					const res = response.data

@@ -220,6 +220,7 @@
 			handleSuccess(response) {
 				if (response.meta.status === 200) {
 					this.$message.success(response.meta.msg)
+					console.log(response)
 					this.tmpImgList.push({pic: response.data.tmp_path})
 				} else {
 					this.$message.error(response.meta.msg)
@@ -229,20 +230,13 @@
 			postEdit() {
 				this.$refs.editFormRef.validate(valid => {
 					if (valid) {
-						/*let pics = []
-						this.imgList.forEach(item => {
-							pics.push({pic: item.pic})
-						})
-						pics.push(...this.tmpImgList)*/
-
-						// console.log(this.editForm.goods_introduce)
 						const form = {
 							goods_name: this.editForm.goods_name,
 							goods_price: this.editForm.goods_price,
 							goods_number: this.editForm.goods_number,
 							goods_weight: this.editForm.goods_weight,
 							goods_introduce: this.editForm.goods_introduce,
-							// pics: pics,
+							pics: [],
 							attrs: [],
 							goods_cat: ''
 						}
@@ -263,6 +257,16 @@
 							}
 							form.attrs.push(newInfo)
 						})
+
+						//处理照片
+						let pics = []
+						this.imgList.forEach(item => {
+							pics.push({pic: item.pic})
+						})
+						this.tmpImgList.forEach(item => {
+							pics.push({pic: item.pic})
+						})
+						form.pics = pics
 
 						this.$http.put(`goods/${this.editForm.goods_id}`, form).then(response => {
 							const res = response.data

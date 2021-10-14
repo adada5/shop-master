@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
 import './plugins/element.js'
 import './assets/css/global.css'
 
@@ -11,6 +10,7 @@ import 'nprogress/nprogress.css'
 
 import axios from 'axios'
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+
 axios.interceptors.request.use(config => {
   //进度条加载
   NProgress.start()
@@ -26,10 +26,6 @@ axios.interceptors.response.use(config => {
 
 
 Vue.prototype.$http = axios
-
-//注册全局组件
-import TreeTable from 'vue-table-with-tree-grid'
-Vue.component('tree-table', TreeTable)
 
 //全局过滤器 时间显示
 Vue.filter('dateFormat', function(originVal) {
@@ -54,10 +50,8 @@ import 'quill/dist/quill.bubble.css' // for bubble theme
 Vue.use(VueQuillEditor)
 
 
-
 Vue.config.productionTip = false
 new Vue({
   router,
-  store,
   render: h => h(App)
 }).$mount('#app')

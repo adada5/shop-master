@@ -67,6 +67,7 @@
 			this.getGoodsList()
 		},
 		methods: {
+			// 获取商品列表数据
 			getGoodsList() {
 				this.$http.get('goods', {params: this.queryInfo}).then(response => {
 					const res = response.data
@@ -90,6 +91,7 @@
 				this.queryInfo.pagenum = newPage
 				this.getGoodsList()
 			},
+			// 删除商品
 			removeById(id){
 				this.$http.delete(`goods/${id}`).then(response => {
 					const res = response.data
@@ -103,9 +105,11 @@
 					this.$message.error("操作失败")
 				})
 			},
+			// 跳转到添加商品页面
 			goAddPage(){
 				this.$router.push('/goods/add')
 			},
+			// 跳转到修改商品页面
 			goEditPage(id){
 				this.$router.push(`/goods/edit/${id}`)
 			}

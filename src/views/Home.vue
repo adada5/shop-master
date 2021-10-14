@@ -63,10 +63,12 @@ export default {
   },
 
   methods: {
+    // 退出清除sessionStorage
     logout(){
       window.sessionStorage.clear()
       this.$router.push("/login")
     },
+    // 获取目录列表
     async getMenuList() {
       const {data: res} = await this.$http.get("menus")
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg);
@@ -74,10 +76,10 @@ export default {
       console.log(res)
     },
     //保存链接的激活状态
-			saveNavState(activePath) {
-				this.activePath = activePath
-				window.sessionStorage.setItem('activePath', activePath)
-			}
+    saveNavState(activePath) {
+      this.activePath = activePath
+      window.sessionStorage.setItem('activePath', activePath)
+    }
   }
 }
 </script>

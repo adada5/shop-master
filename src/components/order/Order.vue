@@ -34,7 +34,6 @@
 				<el-table-column label="操作" width="200">
 					<template v-slot="scope">
 						<el-button size="mini" type="primary" icon="el-icon-edit" @click="showEditDialog">编辑</el-button>
-						<el-button size="mini" type="success" icon="el-icon-location" @click="showProgressDialog(scope.row)">物流</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -63,16 +62,6 @@
 				<el-button type="primary" @click="editDialogVisible=false">确 定</el-button>
 			</span>
 		</el-dialog>
-
-		<!--物流进度对话框-->
-		<el-dialog title="物流进度" width="50%" :visible.sync="progressDialogVisible">
-			<!--内容主体-->
-			<el-timeline>
-				<el-timeline-item v-for="(activity, index) in progressInfo" :key="index" :timestamp="activity.time">
-					{{activity.context}}
-				</el-timeline-item>
-			</el-timeline>
-		</el-dialog>
 	</div>
 </template>
 
@@ -91,7 +80,6 @@
 				orderList: [],
 				total: 0,
 				editDialogVisible: false,
-				progressDialogVisible: false,
 				editForm: {
 					address1: [],
 					address2: ''
@@ -105,7 +93,6 @@
 					]
 				},
 				citydata,
-				progressInfo: []
 			}
 		},
 		created() {
@@ -140,20 +127,7 @@
 			},
 			editDialogClosed() {
 				this.$refs.editFormRef.resetFields()
-			},
-			showProgressDialog() {
-				this.$http.get('kuaidi/1106975712662').then(response => {
-					const res = response.data
-					if (res.meta.status === 200) {
-						this.progressInfo = res.data
-						this.progressDialogVisible = true
-					} else {
-						this.$message.error(res.meta.msg)
-					}
-				}).catch(() => {
-					this.$message.error('请求失败')
-				})
-			}
+			},		
 		}
 	}
 </script>
